@@ -1,0 +1,94 @@
+Name: Edmund Gunn Jr
+
+NYU Email: eg3573@nyu.edu
+
+
+Solutions to midterm exam
+
+
+Question 1 (Multiple choice answer): b. Process 
+
+Question 2 (Multiple choice answer): d. Buddy System 
+
+Question 3 (Multiple choice answer): c. DHCP
+
+Question 4 (Fill-in-blank answer): Semaphores
+
+Question 5 (Fill-in-blank answer): Recursive 
+
+Question 6 (Short answer): 
+The NAT device will change the source IP from 10.1.1.3 to  8.8.8.8 and the port 2222 to a port determined by the NAT device. 4.2.2.2 recieve a message from source 8.8.8.8 on port 80 then  4.2.2.2 server processes the packet like any other request. The reply would be to the public IP 8.8.8.8 then the NAT device translates the destion IP and port from 8.8.8.8 port 80 to 10.1.1.3 port 2222. NAT is used to address the issue of the limited numbers of IPv4 addresses so it manages that by undertsaning the transaltion between private and public network addresses. 
+
+Question 7 (Short answer): 
+In todays environment we no longer use batch multiprogrammiung or think in that way. We now think in a mindset of we dont know what the application will do upfront, or how many applications we want to run. So now we use multithreading and time sharing to meet todays demand of accomplishing different task at once. For instance you can listen to music while you work on an excel sheet and then use google chrome to get more data for your assignment. In the era of computing we are in now its best we dont use Batch Multiprogramming.
+
+Question 8 (Short answer): 
+Threads should not be used if it adds complexity to the program (it can be harder to keep track of whats going on when debugging), if the system is significatly I/O bound threads arent great(the thread would be waiting around for the I/O operation to complete),if the thread will cause synchronization issues(double update/delete issue mentioned in class), threads can also be costly due to added resource overhead (thread switching ). If these cost outweight are insignifint to the benifts of perfomace gains from using threads then i say go for it. 
+
+Question 9 (Short answer): 
+Benfits from Http caching inlcude, reduced network traffic and server load, improved respondse time and latency, reduced bandwith consumpiton, users have a better experince due to these improvemnts also (user/customer satfication). This is beeause caching leevrages the repption and simailirty of web content. Often times HTTP webpages are static meaning once you load it once there will be nothing new to load the nect time. Elemtinating loading  everytime by introduice caching really helps get those benifits.
+
+Question 10 (Short answer): 
+If we write a medium-term scheuling algo for our OS we will need to consider Memory usage, System load, Resource Requirements, User interaction, exection time, I/O operations, and proecess prioty. There are alot of factors to be considered it is critical we evalute these items and their weights to keep balance of optimizing resouces and ensuring fairness in process exection. Get all that down make you should be good to make an effective medium- term scheuling algorithm.
+
+Question 11 (Short answer): 
+Weighted Fair Queueing is a policy used to queue packets going outbound on a network. It ensures packets get where they need to go in a fair manner. There are three prioties, high medium low. For instance in flowclasscation each packet is associated with a ip address and port range,  lets say we specify a ip address and a port range to be marked as high prioty, anything from that address will be high prioty. Anything not owned by that IP address will likely go to medium prioty. Low prioty needs to be speficed also. When they are classified then WFQ will do the heavy lifting and the paxckets will be handled with the spcified prioty. WFQ uses virtual queues and packet scheuling to maintain sepraete flows and keep balance.
+
+
+
+Question 12 (code):
+#include <iostream>
+#include <string>
+
+using namespace std;
+class Clothing{
+private: 
+    std::string description;
+    bool owned;
+public:
+    Clothing(const std::string& desc) : description(desc),  owned(false){}
+    std:: string getDescription() const{
+        return description;
+    }
+    bool isOwned() const{
+        return owned; 
+    }
+    friend class Person;
+};
+
+class Person{
+private:
+    std::string name;
+    Clothing* clothing;
+
+public:
+    Person(const std::string& personName = "Jane Doe") : name(personName), clothing(nullptr){}
+    std::string getName(){
+        return name;
+    }
+    bool purchasedClothing(Clothing* article){
+        if(article->isOwned()){
+            return false;
+        }
+        article->owned = true;
+        clothing = article;
+        return true;
+
+    }
+    void tradeClothing(Clothing* ownClothing, Person* otherPerson){
+        if(ownClothing->isOwned() && otherPerson->clothing ==nullptr){
+            clothing=nullptr;
+            otherPerson->clothing = ownClothing;
+            ownClothing->owned=true;
+        }
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Person& person){
+        os << "Person: " << person.name << std::endl;
+        if(person.clothing != nullptr){
+            os << "Owned Clothing" << person.clothing->getDescription() << std::endl;
+        }
+        return os;
+    }
+
+};
